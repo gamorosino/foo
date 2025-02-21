@@ -10,4 +10,4 @@ bvals=`jq -r '.bvals' config.json`
 bvecs=`jq -r '.bvecs' config.json`
 
 mkdir -p ./dwi
-cp $dwi $bval $bvecs ./dwi
+cp $dwi $bvals $bvecs ./dwi
