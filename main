@@ -5,9 +5,23 @@
 
 
 
-dwi=`jq -r '.dwi' config.json`
-bvals=`jq -r '.bvals' config.json`
-bvecs=`jq -r '.bvecs' config.json`
+dwi=$(jq -r '.dwi // empty' config.json)
+bvals=$(jq -r '.bvals // empty' config.json)
+bvecs=$(jq -r '.bvecs // empty' config.json)
 
-mkdir -p ./dwi
-cp $dwi $bvals $bvecs ./dwi
+valid_file() {
+    [[ -n "$1" && "$1" != "null" && -f "$1" ]]
+}
+
+if valid_file "$dwi" && valid_file "$bvals" && valid_file "$bvecs"; then
+    mkdir -p ./dwi
+    cp "$dwi" "$bvals" "$bvecs" ./dwi
+fi
+
+mask=`jq -r '.mask' config.json`
+if valid_file "$mask" ; then
+  mkdir ./mask
+  cp "${mask}" ./mask
+fi
+
+
